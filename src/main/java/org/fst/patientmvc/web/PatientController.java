@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PatientController {
     private PatientRepository patientRepository ;
-    @GetMapping(path = "/index")
+    @GetMapping(path = "/user/index")
     public String patients(Model model ,
                            @RequestParam(name = "page" , defaultValue = "0") int page
                             ,@RequestParam(name = "size" , defaultValue = "5") int size,
@@ -33,35 +33,35 @@ public class PatientController {
         return "patients";
     }
 
-    @GetMapping(path = "/delete")
+    @GetMapping(path = "/admin/delete")
     public String delete(Long id , String keyword , int page)
     {
         patientRepository.deleteById(id);
-        return "redirect:/index?page="+page+"&keyword="+keyword;
+        return "redirect:/user/index?page="+page+"&keyword="+keyword;
     }
     @GetMapping(path = "/")
     public String home()
     {
-        return "redirect:/index";
+        return "home";
     }
 
-    @GetMapping("/formPatient")
+    @GetMapping("/admin/formPatient")
     public String formPatient(Model model)
     {
         model.addAttribute("patient" , new Patient());
        return "formPatient";
     }
 
-    @PostMapping("/save")
+    @PostMapping("/admin/save")
     public  String save(@Valid  Patient patient , BindingResult bindingResult ,
                         @RequestParam(defaultValue = "") String keyword ,
                         @RequestParam(defaultValue = "0") int page)
     {
         if(bindingResult.hasErrors()) return "formPatient" ;
      patientRepository.save(patient);
-     return  "redirect:/index?page="+page+"&keyword="+keyword;
+     return  "redirect:/user/index?page="+page+"&keyword="+keyword;
     }
-    @GetMapping(path = "/editPatient")
+    @GetMapping(path = "/admin/editPatient")
     public String editPatient(Long id , Model model , String keyword , int page)
     {
         Patient patient = patientRepository.findById(id).orElse(null) ;
@@ -71,5 +71,6 @@ public class PatientController {
         model.addAttribute("keyword" ,keyword);
         return "editPatient";
     }
+
 
 }

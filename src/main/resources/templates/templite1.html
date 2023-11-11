@@ -1,6 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -10,30 +13,45 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand" href="/">Navbar</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:href="@{index}">Home</a>
+                    <a class="nav-link active" aria-current="page" th:href="@{/user/index}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{formPatient}">Nouveau Patient</a>
+                    <a class="nav-link" th:href="@{/admin/formPatient}">Nouveau Patient</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{index}">Chercher</a>
+                    <a class="nav-link" th:href="@{/user/index}">Chercher</a>
                 </li>
+            </ul>
+                 <ul class="navbar-nav" sec:authorize="isAuthenticated()">
+                <li class="nav-item dropdown">
+                    <div class="dropdown" >
+                        <div class="dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                           <span sec:authentication="name"></span>
+                        </div>
+                        <ul sec:authorize="isAuthenticated()" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
+                        </ul>
+                    </div>
+
+                </li>
+               </ul>
+            <ul class="navbar-nav">
                 <li class="nav-item">
-                <a class="nav-link" href="#">[Username]</a>
+                <a class="nav-link" sec:authorize="!isAuthenticated()" th:href="@{/login}">Login</a>
             </li>
             </ul>
+
         </div>
     </div>
 </nav>
 <section layout:fragment="content1">
-
 
 </section>
 </body>
